@@ -1,4 +1,4 @@
-FROM php:8.1.12-fpm
+FROM php:8.1.12-apache
 
 # install basic modules
 RUN apt-get update && apt-get install -y \
@@ -66,4 +66,4 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 RUN echo 'Asia/Taipei' > /etc/timezone 
 RUN echo "[Date]\ndate.timezone=Asia/Taipei" > /usr/local/etc/php/conf.d/timezone.ini
 
-ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint", "php-fpm", "-F"]
+ENTRYPOINT ["/bin/bash"]
