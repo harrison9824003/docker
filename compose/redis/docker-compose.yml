@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+    redis:
+        image: "redis"
+        container_name: "redis"
+        ports:
+            - "6379:6379"
+        privileged: true
+        volumes:
+            - ./conf/redis.conf:/etc/redis/redis.conf
+            - ./data:/data
+        #entrypoint: ["redis-server", "/etc/redis/redis.conf"]
