@@ -13,4 +13,4 @@ services:
             - ./data:/var/lib/mysql
             - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf
         environment:
-            MYSQL_ROOT_PASSWORD: "123456"
+            MYSQL_ROOT_PASSWORD: "secret"
