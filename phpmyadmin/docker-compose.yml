@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+    phpmyadmin:
+        image: phpmyadmin
+        container_name: phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+        restart: always
+        ports:
+            - 8080:80
+        volumes:
+            - /sessions
+            - ./phpmyadmin/config.inc.php:/etc/phpmyadmin/config.inc.php
+            - ./phpmyadmin/theme/:/www/themes/theme/
