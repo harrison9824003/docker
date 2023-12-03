@@ -1,0 +1,65 @@
+version: "3"
+
+services:
+    web_intel:
+        image: "nginx"
+        container_name: "mynginx-intel2"
+        networks:
+            my_net:
+                ipv4_address: 172.18.0.110
+        ports:
+            - "8080:80"
+            - "8081:443"
+        environment:
+            WORDPRESS_DB_HOST: mysql
+            WORDPRESS_DB_USER: 'wordpress'
+            WORDPRESS_DB_PASSWORD: 'admin'
+            WORDPRESS_DB_NAME: 'wordpress'
+        volumes:
+            - /share/Container/wordpress_nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+            - /share/Container/wordpress/certs:/etc/nginx/ssl/certs:ro
+            - /share/Container/wordpress/html:/var/www/html
+    php_intel:
+        image: "harrison9824003/php-swoole:v1.0"
+        container_name: "php-fpm-intel2"
+        networks:
+            my_net:
+                ipv4_address: 172.18.0.111
+        ports:
+            - "9000:9000"
+        volumes:
+            - /share/Container/wordpress/html:/var/www/html
+    mysql_intel:
+        image: "mysql:5.7"
+        container_name: "mysql5.7_2-intel2"
+        networks:
+            my_net:
+                ipv4_address: 172.18.0.112
+        ports:
+            - "3306:3306"
+        volumes:
+            - /share/Container/mysql/log:/var/log/mysql
+            - /share/Container/mysql/data:/var/lib/mysql
+            - /share/Container/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+        environment:
+            MYSQL_ROOT_PASSWORD: "admin"
+    redis_intel:
+        image: "redis"
+        container_name: "redis-intel2"
+        networks:
+            my_net:
+                ipv4_address: 172.18.0.113
+        ports:
+            - "6379:6379"
+        privileged: true
+        volumes:
+            - /share/Container/redis/redis.conf:/etc/redis/redis.conf
+            - /share/Container/redis/data:/data
+    
+networks:
+    my_net:       
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.0/16

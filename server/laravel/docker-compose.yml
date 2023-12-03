@@ -5,12 +5,12 @@ services:
         image: "nginx"
         container_name: "mynginx"
         ports:
-            - "8080:80"
+            - "8081:80"
         networks:
             - default
         volumes:
             - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-            - ../${WEBSITE}:/var/www/html
+            - ./web:/var/www/html
     php:
         #https://github.com/harrison9824003/docker/tree/master/php/fpm/swoole
         image: "php-fpm:swoole"
@@ -20,7 +20,7 @@ services:
         ports:
             - "9000:9000"
         volumes:
-            - ../${WEBSITE}:/var/www/html
+            - ./web:/var/www/html
     mysql:
         image: "mysql:5.7"
         container_name: "mysql5.7"

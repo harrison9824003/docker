@@ -13,7 +13,8 @@ services:
             - ./web:/var/www/html
     php:
         #https://github.com/harrison9824003/docker/tree/master/php/fpm/swoole
-        image: "php-fpm:swoole"
+        image: "harrison9824003/php-swoole:v1.0"
+        # image: "php-fpm:swoole"
         container_name: "php-fpm"
         networks:
             - default
