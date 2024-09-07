@@ -1,10 +1,9 @@
-FROM php:8.2-fpm
+FROM php:7.4-apache
 
 # 安装基本模块
 RUN set -ex && \
     apt-get update && \
     apt-get install -y \
-        nginx \
         procps \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -21,7 +20,7 @@ RUN set -ex && \
         unzip \
         git \
         vim && \
-        apt autoremove && apt clean
+    apt autoremove && apt clean
 
 # 安装 PHP 扩展
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -45,28 +44,26 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer && \
     composer self-update --clean-backups
 
-# 开发工具
-RUN apt-get install -y gdb valgrind && \
-    apt autoremove && apt clean
-
 # 设置台北时区
 RUN /bin/cp /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 RUN echo 'Asia/Taipei' > /etc/timezone 
 RUN echo "[Date]\ndate.timezone=Asia/Taipei" > /usr/local/etc/php/conf.d/timezone.ini
-
-# 复制 Nginx 配置文件
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
 
 # 启动脚本
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
 # 建立 /var/www/html
-RUN mkdir -p /var/www/html && chown -R www-data:www-data /var/www/html
+RUN mkdir -p /var/www/html
+
+# 复制应用程序代码
+COPY ./CodeIgniter-3.1.13 /var/www/html
+
+# 设置 /var/www/html 的权限
+RUN chown -R www-data:www-data /var/www/html
 
 # 暴露端口
 EXPOSE 80
 
-# 启动 Nginx 和 PHP-FPM
+# 启动 Apache
 CMD ["/start.sh"]

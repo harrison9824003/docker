@@ -1,22 +1,13 @@
 #!/bin/sh
 
-# 启动 Nginx 服务
-echo "Starting Nginx..."
-service nginx start
-if [ $? -ne 0 ]; then
-    echo "Failed to start Nginx"
-    echo "Checking Nginx configuration..."
-    nginx -t
-    echo "Nginx error log:"
-    cat /var/log/nginx/error.log
-    exit 1
-fi
+# 设置 /var/www/html 的权限
+chown -R www-data:www-data /var/www/html
 
-# 启动 PHP-FPM 服务
-echo "Starting PHP-FPM..."
-php-fpm
+# 启动 Apache
+echo "Starting Apache..."
+apache2-foreground
 if [ $? -ne 0 ]; then
-    echo "Failed to start PHP-FPM"
+    echo "Failed to start Apache"
     exit 1
 fi
 
