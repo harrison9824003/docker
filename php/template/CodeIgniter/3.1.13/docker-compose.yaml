@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    # volumes:
+      # codeigniter project path
+      # - ./CodeIgniter-3.1.13:/var/www/html
+    environment:
+      - VIRTUAL_HOST=localhost
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: codeigniter
+      MYSQL_USER: codeigniter
+      MYSQL_PASSWORD: codeigniterpassword
+
+volumes:
+  db_data:
