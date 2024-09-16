@@ -1,5 +1,8 @@
 FROM php:8.2-apache
 
+# 啟用 Apache mod_rewrite 模組
+RUN a2enmod rewrite
+
 # 安装基本模块
 RUN set -ex && \
     apt-get update && \
