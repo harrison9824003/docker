@@ -22,17 +22,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 
 # 複製 Laravel 應用程式的所有文件
-COPY ./laravel10 /var/www
+# COPY ./laravel10 /var/www
 
 # 設置適當的權限
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www
+# RUN chown -R www-data:www-data /var/www \
+#     && chmod -R 755 /var/www
 
 # 複製 Nginx 配置檔案到適當的位置
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # 安裝 Laravel 依賴
-RUN composer install --no-dev --optimize-autoloader
+# RUN composer install --no-dev --optimize-autoloader
 
 # 暴露 Nginx 和 PHP-FPM 的端口
 EXPOSE 80

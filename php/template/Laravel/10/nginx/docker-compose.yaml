@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: laravel_app
+    volumes:
+      - ./laravel10:/var/www
     ports:
       - "8000:80"
       - "9000:9000"
